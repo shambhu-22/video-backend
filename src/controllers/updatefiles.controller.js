@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { deleteOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
@@ -9,6 +9,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     if(!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is missing");
     }
+    await deleteOnCloudinary(req.user?.avatar);
     const cloudinaryUrl = await uploadOnCloudinary(avatarLocalPath);
 
     if(!cloudinaryUrl.url) {
@@ -35,6 +36,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     if(!coverImageLocalPath) {
         throw new ApiError(400, "Cover image file is missing");
     }
+    await deleteOnCloudinary(req.user?.coverImage);
     const cloudinaryUrl = await uploadOnCloudinary(coverImageLocalPath);
 
     if(!cloudinaryUrl.url) {
