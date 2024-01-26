@@ -348,5 +348,6 @@ export {
     registerUser,
     loginUser,
     logOutUser,
-    refreshAccessToken
+    refreshAccessToken,
+    updateAccountDetails
 };
